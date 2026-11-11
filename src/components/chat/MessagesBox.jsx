@@ -38,7 +38,7 @@ const MessagesBox = ({ channel, messages }) => {
         </Stack>
       </ScrollArea>
       <Box p="md">
-        <MessageForm />
+        <MessageForm channelId={channel?.id} />
       </Box>
     </Stack>
   );

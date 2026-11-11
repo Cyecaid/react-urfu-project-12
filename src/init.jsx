@@ -2,8 +2,10 @@ import { StrictMode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import App from "./App.jsx";
+import { addMessageToCache } from "./api/chat.js";
 import { HttpError } from "./api/client.js";
 import useAuthStore from "./stores/useAuthStore.js";
+import useConnectionStore from "./stores/useConnectionStore.js";
 import useUiStore from "./stores/useUiStore.js";
 
 const init = async (socket) => {
@@ -19,6 +21,24 @@ const init = async (socket) => {
     if (prevState.token && !state.token) {
       queryClient.clear();
       useUiStore.setState({ currentChannelId: null, modal: null });
+    }
+  });
+
+  const { setConnected } = useConnectionStore.getState();
+  let wasDisconnected = false;
+
+  socket.on("newMessage", (message) => addMessageToCache(queryClient, message));
+
+  socket.on("disconnect", () => {
+    wasDisconnected = true;
+    setConnected(false);
+  });
+
+  socket.on("connect", () => {
+    setConnected(true);
+    if (wasDisconnected) {
+      wasDisconnected = false;
+      queryClient.invalidateQueries();
     }
   });
 

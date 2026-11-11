@@ -1,5 +1,7 @@
 import useAuthStore from "../stores/useAuthStore.js";
 
+const REQUEST_TIMEOUT = 10000;
+
 export class HttpError extends Error {
   constructor(status) {
     super(`HTTP ${status}`);
@@ -17,6 +19,7 @@ export const request = async (path, { method = "GET", body } = {}) => {
       ...(body ? { "Content-Type": "application/json" } : {}),
     },
     ...(body ? { body: JSON.stringify(body) } : {}),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT),
   });
 
   if (!response.ok) {
