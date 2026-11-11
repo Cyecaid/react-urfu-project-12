@@ -6,6 +6,7 @@
 
 Учебный проект Хекслета: https://ru.hexlet.io/
 Как это должно работать: https://files.hexlet.app/a/ose685
+Ссыль на проект: https://react-urfu-project-12-dkng.onrender.com
 
 
 ## Стек

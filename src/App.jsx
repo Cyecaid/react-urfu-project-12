@@ -3,6 +3,7 @@ import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { BrowserRouter, Route, Routes } from "react-router";
 
+import RequireAuth from "./components/RequireAuth.jsx";
 import Layout from "./pages/Layout.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
@@ -13,7 +14,9 @@ const App = () => (
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<ChatPage />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/" element={<ChatPage />} />
+          </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
