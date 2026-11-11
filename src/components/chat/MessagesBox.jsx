@@ -19,7 +19,7 @@ const MessagesBox = ({ channel, messages }) => {
   return (
     <Stack gap={0} h="100%" flex={1} miw={0}>
       <Box p="md" bg="gray.0">
-        <Text fw={700}># {channel?.name}</Text>
+        <Text fw={700} truncate="end"># {channel?.name}</Text>
         <Text size="sm" c="dimmed">
           {messages.length} {messageForms[pluralRules.select(messages.length)]}
         </Text>

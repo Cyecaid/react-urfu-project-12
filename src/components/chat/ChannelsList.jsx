@@ -1,28 +1,88 @@
-import { Button, ScrollArea, Stack, Text } from "@mantine/core";
+import { useEffect, useRef } from "react";
+import { ActionIcon, Button, Group, Menu, ScrollArea, Stack, Text, VisuallyHidden } from "@mantine/core";
 
-const ChannelsList = ({ channels, currentChannelId, onSelect }) => (
-  <Stack gap={0} h="100%" w={220} bg="gray.0" style={{ flexShrink: 0 }}>
-    <Text fw={700} p="md">
-      Каналы
-    </Text>
-    <ScrollArea flex={1} px="xs" pb="xs">
-      <Stack gap={4} component="ul" m={0} p={0} style={{ listStyle: "none" }}>
-        {channels.map((channel) => (
-          <li key={channel.id}>
-            <Button
-              fullWidth
-              justify="flex-start"
-              variant={channel.id === currentChannelId ? "filled" : "subtle"}
-              color={channel.id === currentChannelId ? "gray.7" : "dark"}
-              onClick={() => onSelect(channel.id)}
-            >
-              # {channel.name}
-            </Button>
-          </li>
-        ))}
-      </Stack>
-    </ScrollArea>
-  </Stack>
-);
+import useUiStore from "../../stores/useUiStore.js";
+
+const ChannelItem = ({ channel, isActive, onSelect }) => {
+  const openModal = useUiStore((state) => state.openModal);
+  const variant = isActive ? "filled" : "subtle";
+  const color = isActive ? "gray.7" : "dark";
+
+  const button = (
+    <Button
+      fullWidth
+      miw={0}
+      justify="flex-start"
+      variant={variant}
+      color={color}
+      onClick={() => onSelect(channel.id)}
+      data-active={isActive || undefined}
+      styles={{ label: { minWidth: 0 } }}
+    >
+      <Text span inherit truncate="end">
+        # {channel.name}
+      </Text>
+    </Button>
+  );
+
+  if (!channel.removable) {
+    return button;
+  }
+
+  return (
+    <Group gap={0} wrap="nowrap">
+      {button}
+      <Menu position="bottom-end" withinPortal>
+        <Menu.Target>
+          <ActionIcon variant={variant} color={color} size={36} style={{ flexShrink: 0 }}>
+            <Text span size="xs" aria-hidden>▾</Text>
+            <VisuallyHidden>Управление каналом</VisuallyHidden>
+          </ActionIcon>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item onClick={() => openModal("removing", { channelId: channel.id })}>
+            Удалить
+          </Menu.Item>
+          <Menu.Item onClick={() => openModal("renaming", { channelId: channel.id })}>
+            Переименовать
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
+    </Group>
+  );
+};
+
+const ChannelsList = ({ channels, currentChannelId, onSelect }) => {
+  const openModal = useUiStore((state) => state.openModal);
+  const viewportRef = useRef(null);
+
+  useEffect(() => {
+    viewportRef.current?.querySelector("[data-active]")?.scrollIntoView?.({ block: "nearest" });
+  }, [currentChannelId, channels.length]);
+
+  return (
+    <Stack gap={0} h="100%" w={220} bg="gray.0" style={{ flexShrink: 0 }}>
+      <Group justify="space-between" p="md" wrap="nowrap">
+        <Text fw={700}>Каналы</Text>
+        <ActionIcon variant="subtle" color="dark" title="Добавить канал" onClick={() => openModal("adding")}>
+          +
+        </ActionIcon>
+      </Group>
+      <ScrollArea flex={1} px="xs" pb="xs" offsetScrollbars viewportRef={viewportRef}>
+        <Stack gap={4} component="ul" m={0} p={0} style={{ listStyle: "none" }}>
+          {channels.map((channel) => (
+            <li key={channel.id}>
+              <ChannelItem
+                channel={channel}
+                isActive={channel.id === currentChannelId}
+                onSelect={onSelect}
+              />
+            </li>
+          ))}
+        </Stack>
+      </ScrollArea>
+    </Stack>
+  );
+};
 
 export default ChannelsList;

@@ -2,7 +2,12 @@ import { StrictMode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import App from "./App.jsx";
-import { addMessageToCache } from "./api/chat.js";
+import {
+  addChannelToCache,
+  addMessageToCache,
+  removeChannelFromCache,
+  renameChannelInCache,
+} from "./api/chat.js";
 import { HttpError } from "./api/client.js";
 import useAuthStore from "./stores/useAuthStore.js";
 import useConnectionStore from "./stores/useConnectionStore.js";
@@ -28,6 +33,12 @@ const init = async (socket) => {
   let wasDisconnected = false;
 
   socket.on("newMessage", (message) => addMessageToCache(queryClient, message));
+  socket.on("newChannel", (channel) => addChannelToCache(queryClient, channel));
+  socket.on("renameChannel", (channel) => renameChannelInCache(queryClient, channel));
+  socket.on("removeChannel", (channel) => {
+    useUiStore.getState().leaveChannel(channel.id);
+    removeChannelFromCache(queryClient, channel);
+  });
 
   socket.on("disconnect", () => {
     wasDisconnected = true;

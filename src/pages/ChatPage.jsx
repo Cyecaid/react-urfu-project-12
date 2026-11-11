@@ -3,6 +3,7 @@ import { Alert, Card, Center, Container, Divider, Flex, Loader } from "@mantine/
 import { useChannels, useMessages } from "../api/chat.js";
 import ChannelsList from "../components/chat/ChannelsList.jsx";
 import MessagesBox from "../components/chat/MessagesBox.jsx";
+import ChannelModal from "../components/modals/ChannelModal.jsx";
 import useConnectionStore from "../stores/useConnectionStore.js";
 import useUiStore from "../stores/useUiStore.js";
 
@@ -58,6 +59,7 @@ const ChatPage = () => {
           <MessagesBox channel={currentChannel} messages={channelMessages} />
         </Flex>
       </Card>
+      <ChannelModal />
     </Container>
   );
 };
