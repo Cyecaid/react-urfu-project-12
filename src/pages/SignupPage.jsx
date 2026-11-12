@@ -8,6 +8,7 @@ import { signup } from "../api/auth.js";
 import { HttpError } from "../api/client.js";
 import AuthCard from "../components/AuthCard.jsx";
 import useAuthStore from "../stores/useAuthStore.js";
+import { showError } from "../toasts.js";
 
 const SignupPage = () => {
   const { t } = useTranslation();
@@ -45,7 +46,7 @@ const SignupPage = () => {
         form.setErrors({ username: t("signup.alreadyExists") });
         return;
       }
-      form.setErrors({ confirmPassword: t("errors.network") });
+      showError(t(error instanceof HttpError ? "toasts.requestError" : "toasts.networkError"));
     }
   };
 

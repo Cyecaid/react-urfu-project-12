@@ -1,13 +1,22 @@
+import { useTranslation } from "react-i18next";
+
 import { useChannels, useRenameChannel } from "../../api/chat.js";
+import { showSuccess } from "../../toasts.js";
 import ChannelNameForm from "./ChannelNameForm.jsx";
 
 const RenameChannelModal = ({ channelId, onClose }) => {
+  const { t } = useTranslation();
   const { data: channels = [] } = useChannels();
   const renameChannel = useRenameChannel();
   const channel = channels.find(({ id }) => id === channelId);
 
   const handleSubmit = (name) => {
-    renameChannel.mutate({ id: channelId, name }, { onSuccess: onClose });
+    renameChannel.mutate({ id: channelId, name }, {
+      onSuccess: () => {
+        showSuccess(t("toasts.channelRenamed"));
+        onClose();
+      },
+    });
   };
 
   return (
@@ -17,7 +26,6 @@ const RenameChannelModal = ({ channelId, onClose }) => {
       onSubmit={handleSubmit}
       onCancel={onClose}
       isPending={renameChannel.isPending}
-      isError={renameChannel.isError}
     />
   );
 };

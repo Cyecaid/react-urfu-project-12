@@ -5,7 +5,16 @@ export default {
     loading: "Загрузка…",
     errors: {
       required: "Обязательное поле",
-      network: "Не удалось выполнить запрос. Проверьте соединение и попробуйте ещё раз",
+    },
+    toasts: {
+      channelCreated: "Канал создан",
+      channelRenamed: "Канал переименован",
+      channelRemoved: "Канал удалён",
+      networkError: "Ошибка соединения",
+      loadError: "Не удалось загрузить данные",
+      requestError: "Не удалось выполнить запрос",
+      connectionLost: "Соединение с сервером потеряно",
+      connectionRestored: "Соединение восстановлено",
     },
     login: {
       title: "Войти",
@@ -45,7 +54,6 @@ export default {
       newMessage: "Новое сообщение",
       messagePlaceholder: "Введите сообщение...",
       send: "Отправить",
-      sendError: "Не удалось отправить сообщение. Проверьте соединение и попробуйте ещё раз",
     },
     channels: {
       title: "Каналы",

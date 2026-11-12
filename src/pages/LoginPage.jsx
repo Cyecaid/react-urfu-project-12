@@ -8,6 +8,7 @@ import { login } from "../api/auth.js";
 import { HttpError } from "../api/client.js";
 import AuthCard from "../components/AuthCard.jsx";
 import useAuthStore from "../stores/useAuthStore.js";
+import { showError } from "../toasts.js";
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -35,7 +36,7 @@ const LoginPage = () => {
         form.setErrors({ username: true, password: t("login.invalidCredentials") });
         return;
       }
-      form.setErrors({ password: t("errors.network") });
+      showError(t(error instanceof HttpError ? "toasts.requestError" : "toasts.networkError"));
     }
   };
 

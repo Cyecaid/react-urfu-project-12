@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { useRemoveChannel } from "../../api/chat.js";
 import useUiStore from "../../stores/useUiStore.js";
+import { showSuccess } from "../../toasts.js";
 
 const RemoveChannelModal = ({ channelId, onClose }) => {
   const { t } = useTranslation();
@@ -14,6 +15,7 @@ const RemoveChannelModal = ({ channelId, onClose }) => {
     removeChannel.mutate(channelId, {
       onSuccess: () => {
         leaveChannel(channelId);
+        showSuccess(t("toasts.channelRemoved"));
         onClose();
       },
     });
@@ -23,11 +25,6 @@ const RemoveChannelModal = ({ channelId, onClose }) => {
     <form onSubmit={handleSubmit}>
       <Stack>
         <Text>{t("modals.confirmRemove")}</Text>
-        {removeChannel.isError && (
-          <Text c="red" size="sm">
-            {t("errors.network")}
-          </Text>
-        )}
         <Group justify="flex-end">
           <Button variant="default" onClick={onClose} disabled={removeChannel.isPending}>
             {t("modals.cancel")}

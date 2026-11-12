@@ -1,6 +1,8 @@
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 
 import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import { BrowserRouter, Route, Routes } from "react-router";
 
 import RequireAuth from "./components/RequireAuth.jsx";
@@ -12,6 +14,7 @@ import SignupPage from "./pages/SignupPage.jsx";
 
 const App = () => (
   <MantineProvider>
+    <Notifications position="top-center" />
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>

@@ -1,8 +1,12 @@
+import { useTranslation } from "react-i18next";
+
 import { useAddChannel, useChannels } from "../../api/chat.js";
 import useUiStore from "../../stores/useUiStore.js";
+import { showSuccess } from "../../toasts.js";
 import ChannelNameForm from "./ChannelNameForm.jsx";
 
 const AddChannelModal = ({ onClose }) => {
+  const { t } = useTranslation();
   const { data: channels = [] } = useChannels();
   const addChannel = useAddChannel();
   const setCurrentChannel = useUiStore((state) => state.setCurrentChannel);
@@ -11,6 +15,7 @@ const AddChannelModal = ({ onClose }) => {
     addChannel.mutate(name, {
       onSuccess: (channel) => {
         setCurrentChannel(channel.id);
+        showSuccess(t("toasts.channelCreated"));
         onClose();
       },
     });
@@ -22,7 +27,6 @@ const AddChannelModal = ({ onClose }) => {
       onSubmit={handleSubmit}
       onCancel={onClose}
       isPending={addChannel.isPending}
-      isError={addChannel.isError}
     />
   );
 };

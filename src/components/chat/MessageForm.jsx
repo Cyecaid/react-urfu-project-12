@@ -4,6 +4,7 @@ import { useForm } from "@mantine/form";
 import { useTranslation } from "react-i18next";
 
 import { useSendMessage } from "../../api/chat.js";
+import { cleanText } from "../../profanity.js";
 import useAuthStore from "../../stores/useAuthStore.js";
 
 const MessageForm = ({ channelId }) => {
@@ -28,7 +29,7 @@ const MessageForm = ({ channelId }) => {
 
   const handleSubmit = ({ body }) => {
     sendMessage.mutate(
-      { body: body.trim(), channelId, username },
+      { body: cleanText(body.trim()), channelId, username },
       {
         onSuccess: () => form.reset(),
       },
@@ -48,11 +49,6 @@ const MessageForm = ({ channelId }) => {
           placeholder={t("chat.messagePlaceholder")}
           autoComplete="off"
           readOnly={sendMessage.isPending}
-          error={sendMessage.isError && t("chat.sendError")}
-          onChange={(event) => {
-            sendMessage.reset();
-            form.setFieldValue("body", event.currentTarget.value);
-          }}
         />
         <ActionIcon
           type="submit"
