@@ -1,7 +1,9 @@
 import { Button, Group, Stack, Text, TextInput } from "@mantine/core";
 import { hasLength, isNotEmpty, useForm } from "@mantine/form";
+import { useTranslation } from "react-i18next";
 
 const ChannelNameForm = ({ initialName = "", takenNames, onSubmit, onCancel, isPending, isError }) => {
+  const { t } = useTranslation();
   const form = useForm({
     mode: "uncontrolled",
     initialValues: { name: initialName },
@@ -9,9 +11,9 @@ const ChannelNameForm = ({ initialName = "", takenNames, onSubmit, onCancel, isP
     validate: {
       name: (value) => {
         const name = value.trim();
-        return isNotEmpty("Обязательное поле")(name)
-          ?? hasLength({ min: 3, max: 20 }, "От 3 до 20 символов")(name)
-          ?? (takenNames.includes(name) ? "Должно быть уникальным" : null);
+        return isNotEmpty(t("errors.required"))(name)
+          ?? hasLength({ min: 3, max: 20 }, t("modals.nameLength"))(name)
+          ?? (takenNames.includes(name) ? t("modals.nameUnique") : null);
       },
     },
   });
@@ -22,7 +24,7 @@ const ChannelNameForm = ({ initialName = "", takenNames, onSubmit, onCancel, isP
         <TextInput
           {...form.getInputProps("name")}
           key={form.key("name")}
-          label="Имя канала"
+          label={t("modals.channelName")}
           autoComplete="off"
           data-autofocus
           readOnly={isPending}
@@ -30,15 +32,15 @@ const ChannelNameForm = ({ initialName = "", takenNames, onSubmit, onCancel, isP
         />
         {isError && (
           <Text c="red" size="sm">
-            Не удалось выполнить запрос. Проверьте соединение и попробуйте ещё раз
+            {t("errors.network")}
           </Text>
         )}
         <Group justify="flex-end">
           <Button variant="default" onClick={onCancel} disabled={isPending}>
-            Отменить
+            {t("modals.cancel")}
           </Button>
           <Button type="submit" loading={isPending}>
-            Отправить
+            {t("modals.submit")}
           </Button>
         </Group>
       </Stack>

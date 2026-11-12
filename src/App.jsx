@@ -8,6 +8,7 @@ import Layout from "./pages/Layout.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
+import SignupPage from "./pages/SignupPage.jsx";
 
 const App = () => (
   <MantineProvider>
@@ -18,6 +19,7 @@ const App = () => (
             <Route path="/" element={<ChatPage />} />
           </Route>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

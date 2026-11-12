@@ -1,4 +1,5 @@
 import { Modal } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 
 import useUiStore from "../../stores/useUiStore.js";
 import AddChannelModal from "./AddChannelModal.jsx";
@@ -6,12 +7,13 @@ import RemoveChannelModal from "./RemoveChannelModal.jsx";
 import RenameChannelModal from "./RenameChannelModal.jsx";
 
 const modals = {
-  adding: { title: "Добавить канал", Component: AddChannelModal },
-  renaming: { title: "Переименовать канал", Component: RenameChannelModal },
-  removing: { title: "Удалить канал", Component: RemoveChannelModal },
+  adding: { titleKey: "modals.addTitle", Component: AddChannelModal },
+  renaming: { titleKey: "modals.renameTitle", Component: RenameChannelModal },
+  removing: { titleKey: "modals.removeTitle", Component: RemoveChannelModal },
 };
 
 const ChannelModal = () => {
+  const { t } = useTranslation();
   const modal = useUiStore((state) => state.modal);
   const closeModal = useUiStore((state) => state.closeModal);
   const config = modal && modals[modal.type];
@@ -20,10 +22,10 @@ const ChannelModal = () => {
     return null;
   }
 
-  const { title, Component } = config;
+  const { titleKey, Component } = config;
 
   return (
-    <Modal opened onClose={closeModal} title={title} centered>
+    <Modal opened onClose={closeModal} title={t(titleKey)} centered>
       <Component channelId={modal.extra?.channelId} onClose={closeModal} />
     </Modal>
   );

@@ -1,9 +1,11 @@
 import { Anchor, AppShell, Button, Container, Group } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 import { Link, Outlet } from "react-router";
 
 import useAuthStore from "../stores/useAuthStore.js";
 
 const Layout = () => {
+  const { t } = useTranslation();
   const token = useAuthStore((state) => state.token);
   const logOut = useAuthStore((state) => state.logOut);
 
@@ -13,9 +15,9 @@ const Layout = () => {
         <Container size="lg" h="100%">
           <Group h="100%" justify="space-between">
             <Anchor component={Link} to="/" c="dark" fw={500} underline="never">
-              Hexlet Chat
+              {t("appName")}
             </Anchor>
-            {token && <Button onClick={logOut}>Выйти</Button>}
+            {token && <Button onClick={logOut}>{t("logout")}</Button>}
           </Group>
         </Container>
       </AppShell.Header>

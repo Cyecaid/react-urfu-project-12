@@ -1,4 +1,5 @@
 import { Alert, Card, Center, Container, Divider, Flex, Loader } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 
 import { useChannels, useMessages } from "../api/chat.js";
 import ChannelsList from "../components/chat/ChannelsList.jsx";
@@ -8,6 +9,7 @@ import useConnectionStore from "../stores/useConnectionStore.js";
 import useUiStore from "../stores/useUiStore.js";
 
 const ChatPage = () => {
+  const { t } = useTranslation();
   const channelsQuery = useChannels();
   const messagesQuery = useMessages();
   const currentChannelId = useUiStore((state) => state.currentChannelId);
@@ -17,7 +19,7 @@ const ChatPage = () => {
   if (channelsQuery.isPending || messagesQuery.isPending) {
     return (
       <Center h="50vh">
-        <Loader />
+        <Loader aria-label={t("loading")} />
       </Center>
     );
   }
@@ -25,8 +27,8 @@ const ChatPage = () => {
   if (channelsQuery.isError || messagesQuery.isError) {
     return (
       <Container size="sm">
-        <Alert color="red" title="Ошибка">
-          Не удалось загрузить данные чата
+        <Alert color="red" title={t("chat.errorTitle")}>
+          {t("chat.loadError")}
         </Alert>
       </Container>
     );
@@ -45,7 +47,7 @@ const ChatPage = () => {
     >
       {!isConnected && (
         <Alert color="yellow" mb="sm" py="xs">
-          Нет соединения с сервером. Пытаемся переподключиться…
+          {t("chat.disconnected")}
         </Alert>
       )}
       <Card withBorder shadow="sm" radius="md" p={0} flex={1} mih={0}>

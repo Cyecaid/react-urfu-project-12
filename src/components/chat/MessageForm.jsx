@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { ActionIcon, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useTranslation } from "react-i18next";
 
 import { useSendMessage } from "../../api/chat.js";
 import useAuthStore from "../../stores/useAuthStore.js";
 
 const MessageForm = ({ channelId }) => {
+  const { t } = useTranslation();
   const username = useAuthStore((state) => state.username);
   const sendMessage = useSendMessage();
   const inputRef = useRef(null);
@@ -42,11 +44,11 @@ const MessageForm = ({ channelId }) => {
           {...form.getInputProps("body")}
           ref={inputRef}
           flex={1}
-          aria-label="Новое сообщение"
-          placeholder="Введите сообщение..."
+          aria-label={t("chat.newMessage")}
+          placeholder={t("chat.messagePlaceholder")}
           autoComplete="off"
           readOnly={sendMessage.isPending}
-          error={sendMessage.isError && "Не удалось отправить сообщение. Проверьте соединение и попробуйте ещё раз"}
+          error={sendMessage.isError && t("chat.sendError")}
           onChange={(event) => {
             sendMessage.reset();
             form.setFieldValue("body", event.currentTarget.value);
@@ -55,7 +57,7 @@ const MessageForm = ({ channelId }) => {
         <ActionIcon
           type="submit"
           size="lg"
-          aria-label="Отправить"
+          aria-label={t("chat.send")}
           disabled={isEmpty}
           loading={sendMessage.isPending}
         >

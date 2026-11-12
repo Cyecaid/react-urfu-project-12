@@ -1,12 +1,11 @@
 import { useEffect, useRef } from "react";
 import { Box, Divider, ScrollArea, Stack, Text } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 
 import MessageForm from "./MessageForm.jsx";
 
-const pluralRules = new Intl.PluralRules("ru");
-const messageForms = { one: "сообщение", few: "сообщения", many: "сообщений", other: "сообщения" };
-
 const MessagesBox = ({ channel, messages }) => {
+  const { t } = useTranslation();
   const viewportRef = useRef(null);
 
   useEffect(() => {
@@ -21,7 +20,7 @@ const MessagesBox = ({ channel, messages }) => {
       <Box p="md" bg="gray.0">
         <Text fw={700} truncate="end"># {channel?.name}</Text>
         <Text size="sm" c="dimmed">
-          {messages.length} {messageForms[pluralRules.select(messages.length)]}
+          {t("chat.messagesCount", { count: messages.length })}
         </Text>
       </Box>
       <Divider />

@@ -1,9 +1,11 @@
 import { useEffect, useRef } from "react";
 import { ActionIcon, Button, Group, Menu, ScrollArea, Stack, Text, VisuallyHidden } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 
 import useUiStore from "../../stores/useUiStore.js";
 
 const ChannelItem = ({ channel, isActive, onSelect }) => {
+  const { t } = useTranslation();
   const openModal = useUiStore((state) => state.openModal);
   const variant = isActive ? "filled" : "subtle";
   const color = isActive ? "gray.7" : "dark";
@@ -36,15 +38,15 @@ const ChannelItem = ({ channel, isActive, onSelect }) => {
         <Menu.Target>
           <ActionIcon variant={variant} color={color} size={36} style={{ flexShrink: 0 }}>
             <Text span size="xs" aria-hidden>▾</Text>
-            <VisuallyHidden>Управление каналом</VisuallyHidden>
+            <VisuallyHidden>{t("channels.manage")}</VisuallyHidden>
           </ActionIcon>
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Item onClick={() => openModal("removing", { channelId: channel.id })}>
-            Удалить
+            {t("channels.remove")}
           </Menu.Item>
           <Menu.Item onClick={() => openModal("renaming", { channelId: channel.id })}>
-            Переименовать
+            {t("channels.rename")}
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
@@ -53,6 +55,7 @@ const ChannelItem = ({ channel, isActive, onSelect }) => {
 };
 
 const ChannelsList = ({ channels, currentChannelId, onSelect }) => {
+  const { t } = useTranslation();
   const openModal = useUiStore((state) => state.openModal);
   const viewportRef = useRef(null);
 
@@ -63,8 +66,8 @@ const ChannelsList = ({ channels, currentChannelId, onSelect }) => {
   return (
     <Stack gap={0} h="100%" w={220} bg="gray.0" style={{ flexShrink: 0 }}>
       <Group justify="space-between" p="md" wrap="nowrap">
-        <Text fw={700}>Каналы</Text>
-        <ActionIcon variant="subtle" color="dark" title="Добавить канал" onClick={() => openModal("adding")}>
+        <Text fw={700}>{t("channels.title")}</Text>
+        <ActionIcon variant="subtle" color="dark" title={t("channels.add")} onClick={() => openModal("adding")}>
           +
         </ActionIcon>
       </Group>

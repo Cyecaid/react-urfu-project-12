@@ -1,9 +1,11 @@
 import { Button, Group, Stack, Text } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 
 import { useRemoveChannel } from "../../api/chat.js";
 import useUiStore from "../../stores/useUiStore.js";
 
 const RemoveChannelModal = ({ channelId, onClose }) => {
+  const { t } = useTranslation();
   const removeChannel = useRemoveChannel();
   const leaveChannel = useUiStore((state) => state.leaveChannel);
 
@@ -20,18 +22,18 @@ const RemoveChannelModal = ({ channelId, onClose }) => {
   return (
     <form onSubmit={handleSubmit}>
       <Stack>
-        <Text>Уверены?</Text>
+        <Text>{t("modals.confirmRemove")}</Text>
         {removeChannel.isError && (
           <Text c="red" size="sm">
-            Не удалось выполнить запрос. Проверьте соединение и попробуйте ещё раз
+            {t("errors.network")}
           </Text>
         )}
         <Group justify="flex-end">
           <Button variant="default" onClick={onClose} disabled={removeChannel.isPending}>
-            Отменить
+            {t("modals.cancel")}
           </Button>
           <Button type="submit" color="red" loading={removeChannel.isPending} data-autofocus>
-            Удалить
+            {t("modals.remove")}
           </Button>
         </Group>
       </Stack>
