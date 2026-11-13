@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Box, Divider, ScrollArea, Stack, Text } from "@mantine/core";
+import { Box, Divider, Group, ScrollArea, Stack, Text } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 
 import MessageForm from "./MessageForm.jsx";
@@ -18,7 +18,12 @@ const MessagesBox = ({ channel, messages }) => {
   return (
     <Stack gap={0} h="100%" flex={1} miw={0}>
       <Box p="md" bg="gray.0">
-        <Text fw={700} truncate="end"># {channel?.name}</Text>
+        <Group gap={4} wrap="nowrap">
+          <Text fw={700}>#</Text>
+          <Text fw={700} truncate="end">
+            {channel?.name}
+          </Text>
+        </Group>
         <Text size="sm" c="dimmed">
           {t("chat.messagesCount", { count: messages.length })}
         </Text>
