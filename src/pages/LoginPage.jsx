@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Anchor, Button, PasswordInput, Stack, Text, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { isNotEmpty, useForm } from "@mantine/form";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
 
@@ -23,6 +23,10 @@ const LoginPage = () => {
     initialValues: {
       username: "",
       password: "",
+    },
+    validate: {
+      username: isNotEmpty(t("errors.required")),
+      password: isNotEmpty(t("errors.required")),
     },
   });
 
@@ -58,14 +62,12 @@ const LoginPage = () => {
           <TextInput
             label={t("login.username")}
             autoComplete="username"
-            required
             key={form.key("username")}
             {...form.getInputProps("username")}
           />
           <PasswordInput
             label={t("login.password")}
             autoComplete="current-password"
-            required
             key={form.key("password")}
             {...form.getInputProps("password")}
           />

@@ -68,21 +68,18 @@ const SignupPage = () => {
           <TextInput
             label={t("signup.username")}
             autoComplete="username"
-            required
             key={form.key("username")}
             {...form.getInputProps("username")}
           />
           <PasswordInput
             label={t("signup.password")}
             autoComplete="new-password"
-            required
             key={form.key("password")}
             {...form.getInputProps("password")}
           />
           <PasswordInput
             label={t("signup.confirmPassword")}
             autoComplete="new-password"
-            required
             key={form.key("confirmPassword")}
             {...form.getInputProps("confirmPassword")}
           />

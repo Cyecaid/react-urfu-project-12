@@ -14,6 +14,7 @@ const ChatPage = () => {
   const messagesQuery = useMessages();
   const currentChannelId = useUiStore((state) => state.currentChannelId);
   const setCurrentChannel = useUiStore((state) => state.setCurrentChannel);
+  const isModalOpen = useUiStore((state) => state.modal !== null);
   const isConnected = useConnectionStore((state) => state.isConnected);
 
   if (channelsQuery.isPending || messagesQuery.isPending) {
@@ -50,7 +51,16 @@ const ChatPage = () => {
           {t("chat.disconnected")}
         </Alert>
       )}
-      <Card withBorder shadow="sm" radius="md" p={0} flex={1} mih={0}>
+      <Card
+        withBorder
+        shadow="sm"
+        radius="md"
+        p={0}
+        flex={1}
+        mih={0}
+        inert={isModalOpen}
+        aria-hidden={isModalOpen || undefined}
+      >
         <Flex h="100%">
           <ChannelsList
             channels={channels}
