@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next";
 
 import { useAddChannel, useChannels } from "../../api/chat.js";
+import { useToasts } from "../../context.js";
 import useUiStore from "../../stores/useUiStore.js";
-import { showSuccess } from "../../toasts.js";
 import ChannelNameForm from "./ChannelNameForm.jsx";
 
 const AddChannelModal = ({ onClose }) => {
   const { t } = useTranslation();
+  const { showSuccess } = useToasts();
   const { data: channels = [] } = useChannels();
   const addChannel = useAddChannel();
   const setCurrentChannel = useUiStore((state) => state.setCurrentChannel);

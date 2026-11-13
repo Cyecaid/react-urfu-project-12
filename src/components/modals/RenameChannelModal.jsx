@@ -1,11 +1,12 @@
 import { useTranslation } from "react-i18next";
 
 import { useChannels, useRenameChannel } from "../../api/chat.js";
-import { showSuccess } from "../../toasts.js";
+import { useToasts } from "../../context.js";
 import ChannelNameForm from "./ChannelNameForm.jsx";
 
 const RenameChannelModal = ({ channelId, onClose }) => {
   const { t } = useTranslation();
+  const { showSuccess } = useToasts();
   const { data: channels = [] } = useChannels();
   const renameChannel = useRenameChannel();
   const channel = channels.find(({ id }) => id === channelId);

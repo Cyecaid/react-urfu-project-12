@@ -1,6 +1,9 @@
-import { create } from "zustand";
+import { useStore } from "zustand";
+import { createStore } from "zustand/vanilla";
 
-const useUiStore = create()((set) => ({
+import { useAppContext } from "../context.js";
+
+export const createUiStore = () => createStore()((set) => ({
   currentChannelId: null,
   modal: null,
   setCurrentChannel: (id) => set({ currentChannelId: id }),
@@ -8,5 +11,7 @@ const useUiStore = create()((set) => ({
   openModal: (type, extra = null) => set({ modal: { type, extra } }),
   closeModal: () => set({ modal: null }),
 }));
+
+const useUiStore = (selector) => useStore(useAppContext().stores.ui, selector);
 
 export default useUiStore;

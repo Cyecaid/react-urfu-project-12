@@ -1,5 +1,3 @@
-import useAuthStore from "../stores/useAuthStore.js";
-
 const REQUEST_TIMEOUT = 10000;
 
 export class HttpError extends Error {
@@ -9,8 +7,8 @@ export class HttpError extends Error {
   }
 }
 
-export const request = async (path, { method = "GET", body } = {}) => {
-  const { token, logOut } = useAuthStore.getState();
+export const createRequest = (authStore) => async (path, { method = "GET", body } = {}) => {
+  const { token, logOut } = authStore.getState();
 
   const response = await fetch(`/api/v1${path}`, {
     method,

@@ -7,13 +7,15 @@ import { Link, useNavigate } from "react-router";
 import { signup } from "../api/auth.js";
 import { HttpError } from "../api/client.js";
 import AuthCard from "../components/AuthCard.jsx";
+import { useRequest, useToasts } from "../context.js";
 import useAuthStore from "../stores/useAuthStore.js";
-import { showError } from "../toasts.js";
 
 const SignupPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const logIn = useAuthStore((state) => state.logIn);
+  const request = useRequest();
+  const { showError } = useToasts();
   const [isSubmitting, setSubmitting] = useState(false);
 
   const form = useForm({
@@ -37,7 +39,7 @@ const SignupPage = () => {
   const handleSubmit = async (values) => {
     setSubmitting(true);
     try {
-      const data = await signup(values);
+      const data = await signup(request, values);
       logIn(data);
       navigate("/", { replace: true });
     } catch (error) {

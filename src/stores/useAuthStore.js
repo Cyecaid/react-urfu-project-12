@@ -1,7 +1,10 @@
-import { create } from "zustand";
+import { useStore } from "zustand";
 import { persist } from "zustand/middleware";
+import { createStore } from "zustand/vanilla";
 
-const useAuthStore = create()(
+import { useAppContext } from "../context.js";
+
+export const createAuthStore = () => createStore()(
   persist(
     (set) => ({
       token: null,
@@ -12,5 +15,7 @@ const useAuthStore = create()(
     { name: "auth" },
   ),
 );
+
+const useAuthStore = (selector) => useStore(useAppContext().stores.auth, selector);
 
 export default useAuthStore;

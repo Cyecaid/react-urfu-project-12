@@ -2,11 +2,12 @@ import { Button, Group, Stack, Text } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 
 import { useRemoveChannel } from "../../api/chat.js";
+import { useToasts } from "../../context.js";
 import useUiStore from "../../stores/useUiStore.js";
-import { showSuccess } from "../../toasts.js";
 
 const RemoveChannelModal = ({ channelId, onClose }) => {
   const { t } = useTranslation();
+  const { showSuccess } = useToasts();
   const removeChannel = useRemoveChannel();
   const leaveChannel = useUiStore((state) => state.leaveChannel);
 

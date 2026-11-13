@@ -1,17 +1,21 @@
-import { notifications } from "@mantine/notifications";
+import { hideNotification, showNotification } from "@mantine/notifications";
 
-export const showSuccess = (message) => notifications.show({ color: "green", message });
+export const createToasts = (store) => {
+  const showSuccess = (message) => showNotification({ color: "green", message }, store);
 
-export const showError = (message) => notifications.show({ id: `error:${message}`, color: "red", message });
+  const showError = (message) => showNotification({ id: `error:${message}`, color: "red", message }, store);
 
-export const showConnectionLost = (message) => notifications.show({
-  id: "connection",
-  color: "red",
-  message,
-  autoClose: false,
-});
+  const showConnectionLost = (message) => showNotification({
+    id: "connection",
+    color: "red",
+    message,
+    autoClose: false,
+  }, store);
 
-export const showConnectionRestored = (message) => {
-  notifications.hide("connection");
-  showSuccess(message);
+  const showConnectionRestored = (message) => {
+    hideNotification("connection", store);
+    showSuccess(message);
+  };
+
+  return { showSuccess, showError, showConnectionLost, showConnectionRestored };
 };

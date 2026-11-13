@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { request } from "./client.js";
+import { useRequest } from "../context.js";
 
 export const addMessageToCache = (queryClient, message) => {
   queryClient.setQueryData(["messages"], (messages) => {
@@ -31,18 +31,27 @@ export const removeChannelFromCache = (queryClient, { id }) => {
   queryClient.setQueryData(["messages"], (messages) => messages?.filter(({ channelId }) => channelId !== id));
 };
 
-export const useChannels = () => useQuery({
-  queryKey: ["channels"],
-  queryFn: () => request("/channels"),
-});
+export const useChannels = () => {
+  const request = useRequest();
 
-export const useMessages = () => useQuery({
-  queryKey: ["messages"],
-  queryFn: () => request("/messages"),
-});
+  return useQuery({
+    queryKey: ["channels"],
+    queryFn: () => request("/channels"),
+  });
+};
+
+export const useMessages = () => {
+  const request = useRequest();
+
+  return useQuery({
+    queryKey: ["messages"],
+    queryFn: () => request("/messages"),
+  });
+};
 
 export const useSendMessage = () => {
   const queryClient = useQueryClient();
+  const request = useRequest();
 
   return useMutation({
     mutationFn: (message) => request("/messages", { method: "POST", body: message }),
@@ -52,6 +61,7 @@ export const useSendMessage = () => {
 
 export const useAddChannel = () => {
   const queryClient = useQueryClient();
+  const request = useRequest();
 
   return useMutation({
     mutationFn: (name) => request("/channels", { method: "POST", body: { name } }),
@@ -61,6 +71,7 @@ export const useAddChannel = () => {
 
 export const useRenameChannel = () => {
   const queryClient = useQueryClient();
+  const request = useRequest();
 
   return useMutation({
     mutationFn: ({ id, name }) => request(`/channels/${id}`, { method: "PATCH", body: { name } }),
@@ -70,6 +81,7 @@ export const useRenameChannel = () => {
 
 export const useRemoveChannel = () => {
   const queryClient = useQueryClient();
+  const request = useRequest();
 
   return useMutation({
     mutationFn: (id) => request(`/channels/${id}`, { method: "DELETE" }),
